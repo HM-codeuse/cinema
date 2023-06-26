@@ -44,7 +44,7 @@ CREATE TABLE films (
 CREATE TABLE tarifs (
 	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	nom varchar(225),
-	prix float,
+	prix DECIMAL (6, 2),
 	conditions varchar(255));
  
 CREATE TABLE seances (
@@ -160,3 +160,32 @@ LIMIT 100;
 
 
 SELECT * FROM seances;
+
+DROP TABLE paniers;
+CREATE TABLE paniers(
+	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	nombredePlaces int,
+	montant DECIMAL(6,2)
+	id_tarifs int NOT NULL,
+	FOREIGN KEY (id_tarifs)
+		REFERENCES tarifs (id)
+	);
+
+
+DELETE FROM paniers;
+DELETE FROM tarifs; 
+
+INSERT INTO paniers (nombredePlaces, id_tarifs)VALUES 
+(3, 1),
+(2, 2),
+(1, 3);
+
+INSERT INTO paniers (nombredePlaces, id_tarifs, montant)
+SELECT p.nombredePlaces, p.id_tarifs, p.nombredePlaces * t.prix
+FROM paniers p
+INNER JOIN tarifs t
+ON p.id_tarifs = t.id ;
+
+SELECT * FROM paniers p  ;
+
+
